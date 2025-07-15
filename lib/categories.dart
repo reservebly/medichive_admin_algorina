@@ -6,25 +6,30 @@ class ChooseCategoryPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFEAF6FA), // light blue background
+      backgroundColor: const Color(0xFFEBF4F6),
       appBar: AppBar(
-        title: const Text('Categories'),
-        backgroundColor: Colors.blue,
+        backgroundColor: Colors.white,
+        elevation: 0,
+        toolbarHeight: 0,
       ),
       body: Center(
         child: SingleChildScrollView(
           padding: const EdgeInsets.all(16.0),
           child: Column(
             children: [
-              _buildCategoryButton("Hospitals"),
+              _buildCategoryButton(context, "Hospitals"),
               const SizedBox(height: 16),
-              _buildCategoryButton("Labs"),
+              _buildCategoryButton(context, "Labs"),
               const SizedBox(height: 16),
-              _buildCategoryButton("Add institute"),
+              _buildCategoryButton(context, "Add institute", navigateTo: '/addInstitute'),
               const SizedBox(height: 16),
-              _buildCategoryButton("Add lab"),
+              _buildCategoryButton(context, "Add lab", navigateTo: '/addLab'), // ✅ Updated
               const SizedBox(height: 16),
-              _buildCategoryButton("Complains and Support"),
+              _buildCategoryButton(
+                context,
+                "Complaints and Support",
+                navigateTo: '/complaints',
+              ),
             ],
           ),
         ),
@@ -32,12 +37,13 @@ class ChooseCategoryPage extends StatelessWidget {
     );
   }
 
-  static Widget _buildCategoryButton(String title) {
+  static Widget _buildCategoryButton(BuildContext context, String title,
+      {String? navigateTo}) {
     return SizedBox(
       width: double.infinity,
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
-          backgroundColor: Colors.blue,
+          backgroundColor: const Color(0xFF1E79BF),
           padding: const EdgeInsets.symmetric(vertical: 16),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(8),
@@ -45,7 +51,11 @@ class ChooseCategoryPage extends StatelessWidget {
           elevation: 4,
         ),
         onPressed: () {
-          // Add your onPressed logic here
+          if (navigateTo != null) {
+            Navigator.pushNamed(context, navigateTo);
+          } else {
+            // No navigation logic yet for non-linked buttons like "Hospitals" or "Labs"
+          }
         },
         child: Text(
           title,

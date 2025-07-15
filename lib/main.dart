@@ -1,10 +1,33 @@
 import 'package:flutter/material.dart';
-import 'add_institute.dart';
-import 'add_lab.dart';
-import 'institute_form.dart';
-import 'package:medichive_admin_algorina/category_card.dart';
-import 'successful_screen.dart';
-import 'complaint_item.dart';
+
+// Screens for institute features
+import 'add_institute1.dart';
+import 'add_institute2.dart';
+import 'add_institute3.dart';
+import 'add_institute4.dart';
+import 'institute1.dart';
+import 'institute2.dart';
+import 'institute3.dart';
+import 'institute4.dart';
+import 'institute5.dart'; // Delete confirmation popup
+
+// Screens for labs
+import 'add_lab1.dart';
+import 'add_lab2.dart';
+import 'add_lab3.dart';
+import 'add_lab4.dart';
+import 'lab1.dart';
+import 'lab2.dart';
+import 'lab3.dart';
+import 'lab4.dart';
+import 'lab5.dart'; // Delete confirmation popup
+
+// Screens for complaints
+import 'complaints1.dart';
+import 'complaints2.dart';
+
+// Other
+import 'categories.dart';
 
 void main() {
   runApp(const MyApp());
@@ -19,48 +42,54 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Hospital Management System',
       theme: ThemeData(
-        primarySwatch: Colors.indigo,
-        scaffoldBackgroundColor: const Color(0xFFEFF6F9),
+        scaffoldBackgroundColor: const Color(0xFFEBF4F6),
         fontFamily: 'Arial',
-        cardTheme: CardTheme(
-          elevation: 2,
-          margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(8),
+        appBarTheme: const AppBarTheme(
+          backgroundColor: Colors.white,
+          centerTitle: true,
+          elevation: 1,
+          titleTextStyle: TextStyle(
+            color: Colors.black,
+            fontWeight: FontWeight.bold,
+            fontSize: 20,
           ),
         ),
       ),
-      initialRoute: '/complaints',
+      initialRoute: '/instituteDeleteConfirm',
       routes: {
-      
+        // Categories / Dashboard
         '/chooseCategory': (context) => const ChooseCategoryPage(),
+
+        // Institute flow
         '/addInstitute': (context) => const AddInstitutePage(),
+        '/instituteForm': (context) => const InstituteFormPage(),
+        '/success': (context) => const InstituteCreatedScreen(),
+        '/fail': (context) => const AddInstituteFailedScreen(),
+
+        // Lab flow
         '/addLab': (context) => const AddLabPage(),
-        '/instituteForm': (context) => InstituteFormPage(),
-        '/success': (context) => const SuccessScreen(),
+        '/labForm': (context) => const LabFormPage(),
+        '/labSuccess': (context) => const LabCreatedScreen(),
+        '/labFail': (context) => const AddLabFailedScreen(),
+
+        // Complaints
         '/complaints': (context) => const ComplaintsScreen(),
+        '/notifySuccess': (context) => const NotifySuccessScreen(),
+
+        // Institute management
+        '/instituteList': (context) => const InstituteListPage(),
+        '/instituteProfile': (context) => const InstituteProfilePage(),
+        '/instituteUpdated': (context) => const InstituteUpdatedScreen(),
+        '/instituteDeleted': (context) => const InstituteDeletedScreen(),
+        '/instituteDeleteConfirm': (context) => const InstituteDeletePopup(),
+
+        // Lab management
+        '/labList': (context) => const LabListPage(),
+        '/labProfile': (context) => const LabProfilePage(),
+        '/labUpdated': (context) => const LabUpdatedScreen(),
+        '/labDeleted': (context) => const LabDeletedScreen(),
+        '/labDeleteConfirm': (context) => const LabDeletePopup(),
       },
-    );
-  }
-}
-
-class ComplaintsScreen extends StatelessWidget {
-  const ComplaintsScreen({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Completing and Support'),
-      ),
-      body: ListView.builder(
-        padding: const EdgeInsets.only(bottom: 20),
-        itemCount: 1,
-        itemBuilder: (context, index) => const ComplaintItem(
-          hospitalName: 'Adali hospital',
-          complaintText: 'Lorem ipsum faci isoem the industry\'s standard dummy text ever since the',
-        ),
-      ),
     );
   }
 }

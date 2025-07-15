@@ -9,7 +9,7 @@ class InstituteFormPage extends StatelessWidget {
       hintText: 'Add description about the institute',
       filled: true,
       fillColor: Colors.white,
-      contentPadding: EdgeInsets.all(16),
+      contentPadding: const EdgeInsets.all(16),
       border: OutlineInputBorder(
         borderRadius: BorderRadius.circular(12),
         borderSide: BorderSide.none,
@@ -17,11 +17,12 @@ class InstituteFormPage extends StatelessWidget {
     );
 
     return Scaffold(
+      backgroundColor: const Color(0xFFEBF4F6),
       appBar: AppBar(
         elevation: 0,
         backgroundColor: Colors.transparent,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Colors.black87),
+          icon: const Icon(Icons.arrow_back, color: Colors.black87),
           onPressed: () => Navigator.pop(context),
         ),
       ),
@@ -30,51 +31,41 @@ class InstituteFormPage extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('About', style: TextStyle(fontWeight: FontWeight.bold)),
-            SizedBox(height: 8),
+            const Text('About', style: TextStyle(fontWeight: FontWeight.bold)),
+            const SizedBox(height: 8),
             TextField(
               maxLines: 3,
               decoration: textFieldDecoration.copyWith(
                 hintText: 'Add description about the institute',
               ),
             ),
-            SizedBox(height: 20),
-            Text('Certificates', style: TextStyle(fontWeight: FontWeight.bold)),
-            SizedBox(height: 8),
+            const SizedBox(height: 20),
+            const Text('Certificates',
+                style: TextStyle(fontWeight: FontWeight.bold)),
+            const SizedBox(height: 8),
             TextField(
               maxLines: 2,
               decoration: textFieldDecoration.copyWith(
                 hintText: 'Add description about certificates',
               ),
             ),
-            SizedBox(height: 30),
-            Center(
-              child: ElevatedButton.icon(
-                onPressed: () {},
-                icon: Icon(Icons.upload, color: Colors.white),
-                label: Text('Upload'),
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Color(0xFF001B54),
-                  padding: EdgeInsets.symmetric(horizontal: 40, vertical: 16),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  elevation: 4,
-                ),
-              ),
-            ),
-            Spacer(),
+            const Spacer(),
             Center(
               child: ElevatedButton(
-                onPressed: () {},
-                child: Text('Create'),
+                onPressed: () {
+                  Navigator.pushNamed(context, '/instituteCreated');
+                },
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Color(0xFF001B54),
-                  padding: EdgeInsets.symmetric(horizontal: 100, vertical: 16),
+                  backgroundColor: const Color(0xFF071952),
+                  padding: const EdgeInsets.symmetric(horizontal: 100, vertical: 16),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(8),
                   ),
                   elevation: 2,
+                ),
+                child: const Text(
+                  'Create',
+                  style: TextStyle(color: Colors.white),
                 ),
               ),
             ),

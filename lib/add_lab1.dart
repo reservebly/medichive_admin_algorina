@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 
-class AddInstitutePage extends StatelessWidget {
-  const AddInstitutePage({super.key});
+class AddLabPage extends StatelessWidget {
+  const AddLabPage({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFEAF4F8),
+      backgroundColor: const Color(0xFFEBF4F6),
       appBar: AppBar(
-        backgroundColor: const Color(0xFFEAF4F8),
+        backgroundColor: const Color(0xFFEBF4F6),
         elevation: 0,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back, color: Colors.black),
@@ -18,7 +18,7 @@ class AddInstitutePage extends StatelessWidget {
         ),
         centerTitle: true,
         title: const Text(
-          'Add institute',
+          'Add Lab',
           style: TextStyle(
             color: Colors.black,
             fontWeight: FontWeight.bold,
@@ -30,7 +30,6 @@ class AddInstitutePage extends StatelessWidget {
         padding: const EdgeInsets.all(16),
         child: Column(
           children: [
-            // Circle Avatar for Image
             CircleAvatar(
               radius: 50,
               backgroundColor: Colors.grey[300],
@@ -42,7 +41,6 @@ class AddInstitutePage extends StatelessWidget {
             ),
             const SizedBox(height: 24),
 
-            // Basic Info
             const Align(
               alignment: Alignment.centerLeft,
               child: Text(
@@ -56,13 +54,12 @@ class AddInstitutePage extends StatelessWidget {
             const Divider(thickness: 1),
 
             const SizedBox(height: 12),
-            _buildTextField('Institute Name'),
+            _buildTextField('Lab Name'),
             const SizedBox(height: 12),
-            _buildTextField('Institute Registration Number'),
+            _buildTextField('Lab Registration Number'),
 
             const SizedBox(height: 24),
 
-            // Contact Information
             const Align(
               alignment: Alignment.centerLeft,
               child: Text(
@@ -84,19 +81,18 @@ class AddInstitutePage extends StatelessWidget {
 
             const SizedBox(height: 32),
 
-            // Next Button
             SizedBox(
               width: double.infinity,
               height: 50,
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.indigo[900],
+                  backgroundColor: const Color(0xFF071952),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(8),
                   ),
                 ),
                 onPressed: () {
-                  // No navigation yet
+                  Navigator.pushNamed(context, '/labForm');
                 },
                 child: const Text(
                   'Next',
@@ -114,7 +110,6 @@ class AddInstitutePage extends StatelessWidget {
     );
   }
 
-  // TextField Widget
   static Widget _buildTextField(String hintText) {
     return TextField(
       decoration: InputDecoration(
