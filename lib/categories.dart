@@ -17,13 +17,13 @@ class ChooseCategoryPage extends StatelessWidget {
           padding: const EdgeInsets.all(16.0),
           child: Column(
             children: [
-              _buildCategoryButton(context, "Hospitals"),
+              _buildCategoryButton(context, "Institutes", navigateTo: '/instituteList'),
               const SizedBox(height: 16),
-              _buildCategoryButton(context, "Labs"),
+              _buildCategoryButton(context, "Labs", navigateTo: '/labList'),
               const SizedBox(height: 16),
               _buildCategoryButton(context, "Add institute", navigateTo: '/addInstitute'),
               const SizedBox(height: 16),
-              _buildCategoryButton(context, "Add lab", navigateTo: '/addLab'), // ✅ Updated
+              _buildCategoryButton(context, "Add lab", navigateTo: '/addLab'),
               const SizedBox(height: 16),
               _buildCategoryButton(
                 context,
@@ -54,7 +54,7 @@ class ChooseCategoryPage extends StatelessWidget {
           if (navigateTo != null) {
             Navigator.pushNamed(context, navigateTo);
           } else {
-            // No navigation logic yet for non-linked buttons like "Hospitals" or "Labs"
+            // No action defined yet
           }
         },
         child: Text(

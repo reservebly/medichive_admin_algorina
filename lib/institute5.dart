@@ -6,7 +6,7 @@ class InstituteDeletePopup extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      backgroundColor: const Color(0xFFEBF4F6), // Updated background color
+      backgroundColor: const Color(0xFFEBF4F6), // Light background color inside dialog
       title: const Text(
         'Delete Institute',
         style: TextStyle(fontWeight: FontWeight.bold),
@@ -19,25 +19,36 @@ class InstituteDeletePopup extends StatelessWidget {
       actions: [
         ElevatedButton(
           onPressed: () {
-            Navigator.pop(context); // Cancel
+            Navigator.pop(context); // Close the popup dialog
+            Navigator.pushNamed(context, '/cancelledInstituteList'); // Navigate on Cancel
           },
           style: ElevatedButton.styleFrom(
             backgroundColor: Colors.grey.shade400,
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(8),
+            ),
           ),
-          child: const Text('Cancel', style: TextStyle(color: Colors.white)),
+          child: const Text(
+            'Cancel',
+            style: TextStyle(color: Colors.white),
+          ),
         ),
         const SizedBox(width: 12),
         ElevatedButton(
           onPressed: () {
-            Navigator.pop(context); // Close dialog
-            Navigator.pushNamed(context, '/instituteDeleted');
+            Navigator.pop(context); // Close the popup dialog
+            Navigator.pushNamed(context, '/instituteDeleted'); // Navigate on Delete
           },
           style: ElevatedButton.styleFrom(
             backgroundColor: Colors.red,
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(8),
+            ),
           ),
-          child: const Text('Delete', style: TextStyle(color: Colors.white)),
+          child: const Text(
+            'Delete',
+            style: TextStyle(color: Colors.white),
+          ),
         ),
       ],
     );

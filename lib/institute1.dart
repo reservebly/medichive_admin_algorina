@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'institute5.dart';  // import popup from separate file
 
 class InstituteListPage extends StatelessWidget {
   const InstituteListPage({super.key});
@@ -61,7 +62,11 @@ class InstituteListPage extends StatelessWidget {
                       children: [
                         ElevatedButton(
                           onPressed: () {
-                            // TODO: Delete logic
+                            // Show delete popup imported from institute5.dart
+                            showDialog(
+                              context: context,
+                              builder: (context) => const InstituteDeletePopup(),
+                            );
                           },
                           style: ElevatedButton.styleFrom(
                             backgroundColor: Colors.red,
@@ -71,7 +76,7 @@ class InstituteListPage extends StatelessWidget {
                         const SizedBox(width: 8),
                         ElevatedButton(
                           onPressed: () {
-                            // TODO: Update logic
+                            Navigator.pushNamed(context, '/instituteProfile');
                           },
                           style: ElevatedButton.styleFrom(
                             backgroundColor: Colors.green,

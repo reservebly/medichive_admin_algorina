@@ -6,31 +6,27 @@ class InstituteCreatedScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFEBF4F6), // Light blue background
+      backgroundColor: const Color(0xFFEBF4F6),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Container(
-              padding: const EdgeInsets.all(24),
-              decoration: const BoxDecoration(
-                shape: BoxShape.circle,
-                color: Color(0xFF071952), // Dark blue circle
-              ),
-              child: const Icon(
-                Icons.check,
-                size: 48,
-                color: Colors.white,
-              ),
-            ),
-            const SizedBox(height: 24),
+            const Icon(Icons.check_circle, color: Colors.green, size: 80),
+            const SizedBox(height: 20),
             const Text(
-              'Institute successfully created',
-              style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-                color: Colors.black,
+              'Institute successfully created!',
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(height: 16),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.popUntil(context, ModalRoute.withName('/chooseCategory'));
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: const Color(0xFF071952),
+                padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 12),
               ),
+              child: const Text('Go to Dashboard', style: TextStyle(color: Colors.white)),
             ),
           ],
         ),

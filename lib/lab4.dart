@@ -24,6 +24,18 @@ class LabDeletedScreen extends StatelessWidget {
               'Lab successfully deleted',
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
             ),
+            const SizedBox(height: 32),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.pushNamedAndRemoveUntil(
+                    context, '/chooseCategory', (route) => false);
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Color(0xFF071952),
+                padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 14),
+              ),
+              child: const Text('Go to Dashboard'),
+            ),
           ],
         ),
       ),

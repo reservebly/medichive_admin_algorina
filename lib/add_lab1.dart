@@ -1,7 +1,71 @@
 import 'package:flutter/material.dart';
 
-class AddLabPage extends StatelessWidget {
+class AddLabPage extends StatefulWidget {
   const AddLabPage({super.key});
+
+  @override
+  State<AddLabPage> createState() => _AddLabPageState();
+}
+
+class _AddLabPageState extends State<AddLabPage> {
+  final TextEditingController labNameController = TextEditingController();
+  final TextEditingController registrationNumberController = TextEditingController();
+  final TextEditingController mobileController = TextEditingController();
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController websiteController = TextEditingController();
+  final TextEditingController addressController = TextEditingController();
+
+  void _showError(String message) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text(message), backgroundColor: Colors.red),
+    );
+  }
+
+  bool _validateInputs() {
+    if (labNameController.text.trim().isEmpty) {
+      _showError('Lab Name is required');
+      return false;
+    }
+    if (registrationNumberController.text.trim().isEmpty) {
+      _showError('Lab Registration Number is required');
+      return false;
+    }
+    final mobile = mobileController.text.trim();
+    if (mobile.isEmpty) {
+      _showError('Mobile Number is required');
+      return false;
+    }
+    if (!RegExp(r'^\d{10}$').hasMatch(mobile)) {
+      _showError('Mobile Number must be exactly 10 digits');
+      return false;
+    }
+    final email = emailController.text.trim();
+    if (email.isEmpty) {
+      _showError('Email Address is required');
+      return false;
+    }
+    final emailRegex = RegExp(r'^[^@\s]+@[^@\s]+\.[^@\s]+$');
+    if (!emailRegex.hasMatch(email)) {
+      _showError('Enter a valid Email Address');
+      return false;
+    }
+    if (addressController.text.trim().isEmpty) {
+      _showError('Address is required');
+      return false;
+    }
+    return true;
+  }
+
+  @override
+  void dispose() {
+    labNameController.dispose();
+    registrationNumberController.dispose();
+    mobileController.dispose();
+    emailController.dispose();
+    websiteController.dispose();
+    addressController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -54,9 +118,9 @@ class AddLabPage extends StatelessWidget {
             const Divider(thickness: 1),
 
             const SizedBox(height: 12),
-            _buildTextField('Lab Name'),
+            _buildTextField('Lab Name', controller: labNameController),
             const SizedBox(height: 12),
-            _buildTextField('Lab Registration Number'),
+            _buildTextField('Lab Registration Number', controller: registrationNumberController),
 
             const SizedBox(height: 24),
 
@@ -71,13 +135,13 @@ class AddLabPage extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 12),
-            _buildTextField('Mobile Number'),
+            _buildTextField('Mobile Number', controller: mobileController, keyboardType: TextInputType.phone),
             const SizedBox(height: 12),
-            _buildTextField('Email Address'),
+            _buildTextField('Email Address', controller: emailController, keyboardType: TextInputType.emailAddress),
             const SizedBox(height: 12),
-            _buildTextField('Website'),
+            _buildTextField('Website', controller: websiteController),
             const SizedBox(height: 12),
-            _buildTextField('Address'),
+            _buildTextField('Address', controller: addressController),
 
             const SizedBox(height: 32),
 
@@ -92,7 +156,9 @@ class AddLabPage extends StatelessWidget {
                   ),
                 ),
                 onPressed: () {
-                  Navigator.pushNamed(context, '/labForm');
+                  if (_validateInputs()) {
+                    Navigator.pushNamed(context, '/labForm');
+                  }
                 },
                 child: const Text(
                   'Next',
@@ -110,8 +176,11 @@ class AddLabPage extends StatelessWidget {
     );
   }
 
-  static Widget _buildTextField(String hintText) {
+  static Widget _buildTextField(String hintText,
+      {TextEditingController? controller, TextInputType keyboardType = TextInputType.text}) {
     return TextField(
+      controller: controller,
+      keyboardType: keyboardType,
       decoration: InputDecoration(
         hintText: hintText,
         filled: true,

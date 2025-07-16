@@ -1,7 +1,72 @@
 import 'package:flutter/material.dart';
 
-class AddInstitutePage extends StatelessWidget {
+class AddInstitutePage extends StatefulWidget {
   const AddInstitutePage({super.key});
+
+  @override
+  State<AddInstitutePage> createState() => _AddInstitutePageState();
+}
+
+class _AddInstitutePageState extends State<AddInstitutePage> {
+  final TextEditingController instituteNameController = TextEditingController();
+  final TextEditingController registrationNumberController = TextEditingController();
+  final TextEditingController mobileController = TextEditingController();
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController websiteController = TextEditingController();
+  final TextEditingController addressController = TextEditingController();
+
+  void _showError(String message) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text(message), backgroundColor: Colors.red),
+    );
+  }
+
+  bool _validateInputs() {
+    if (instituteNameController.text.trim().isEmpty) {
+      _showError('Institute Name is required');
+      return false;
+    }
+    if (registrationNumberController.text.trim().isEmpty) {
+      _showError('Institute Registration Number is required');
+      return false;
+    }
+    final mobile = mobileController.text.trim();
+    if (mobile.isEmpty) {
+      _showError('Mobile Number is required');
+      return false;
+    }
+    if (!RegExp(r'^\d{10}$').hasMatch(mobile)) {
+      _showError('Mobile Number must be exactly 10 digits');
+      return false;
+    }
+    final email = emailController.text.trim();
+    if (email.isEmpty) {
+      _showError('Email Address is required');
+      return false;
+    }
+    final emailRegex = RegExp(r'^[^@\s]+@[^@\s]+\.[^@\s]+$');
+    if (!emailRegex.hasMatch(email)) {
+      _showError('Enter a valid Email Address');
+      return false;
+    }
+    if (addressController.text.trim().isEmpty) {
+      _showError('Address is required');
+      return false;
+    }
+    // Website is optional, no validation
+    return true;
+  }
+
+  @override
+  void dispose() {
+    instituteNameController.dispose();
+    registrationNumberController.dispose();
+    mobileController.dispose();
+    emailController.dispose();
+    websiteController.dispose();
+    addressController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -54,9 +119,9 @@ class AddInstitutePage extends StatelessWidget {
             const Divider(thickness: 1),
 
             const SizedBox(height: 12),
-            _buildTextField('Institute Name'),
+            _buildTextField('Institute Name', controller: instituteNameController),
             const SizedBox(height: 12),
-            _buildTextField('Institute Registration Number'),
+            _buildTextField('Institute Registration Number', controller: registrationNumberController),
 
             const SizedBox(height: 24),
 
@@ -71,13 +136,13 @@ class AddInstitutePage extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 12),
-            _buildTextField('Mobile Number'),
+            _buildTextField('Mobile Number', controller: mobileController, keyboardType: TextInputType.phone),
             const SizedBox(height: 12),
-            _buildTextField('Email Address'),
+            _buildTextField('Email Address', controller: emailController, keyboardType: TextInputType.emailAddress),
             const SizedBox(height: 12),
-            _buildTextField('Website'),
+            _buildTextField('Website', controller: websiteController),
             const SizedBox(height: 12),
-            _buildTextField('Address'),
+            _buildTextField('Address', controller: addressController),
 
             const SizedBox(height: 32),
 
@@ -92,7 +157,9 @@ class AddInstitutePage extends StatelessWidget {
                   ),
                 ),
                 onPressed: () {
-                  Navigator.pushNamed(context, '/instituteForm');
+                  if (_validateInputs()) {
+                    Navigator.pushNamed(context, '/instituteForm');
+                  }
                 },
                 child: const Text(
                   'Next',
@@ -110,8 +177,11 @@ class AddInstitutePage extends StatelessWidget {
     );
   }
 
-  static Widget _buildTextField(String hintText) {
+  static Widget _buildTextField(String hintText,
+      {TextEditingController? controller, TextInputType keyboardType = TextInputType.text}) {
     return TextField(
+      controller: controller,
+      keyboardType: keyboardType,
       decoration: InputDecoration(
         hintText: hintText,
         filled: true,

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'lab5.dart'; // Import popup
 
 class LabListPage extends StatelessWidget {
   const LabListPage({super.key});
@@ -61,7 +62,10 @@ class LabListPage extends StatelessWidget {
                       children: [
                         ElevatedButton(
                           onPressed: () {
-                            // TODO: Delete logic
+                            showDialog(
+                              context: context,
+                              builder: (context) => const LabDeletePopup(),
+                            );
                           },
                           style: ElevatedButton.styleFrom(
                             backgroundColor: Colors.red,
@@ -71,7 +75,7 @@ class LabListPage extends StatelessWidget {
                         const SizedBox(width: 8),
                         ElevatedButton(
                           onPressed: () {
-                            // TODO: Update logic
+                            Navigator.pushNamed(context, '/labProfile');
                           },
                           style: ElevatedButton.styleFrom(
                             backgroundColor: Colors.green,

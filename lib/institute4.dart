@@ -17,20 +17,24 @@ class InstituteDeletedScreen extends StatelessWidget {
                 shape: BoxShape.circle,
                 color: Color(0xFF071952),
               ),
-              child: const Icon(
-                Icons.check,
-                size: 48,
-                color: Colors.white,
-              ),
+              child: const Icon(Icons.check, size: 48, color: Colors.white),
             ),
             const SizedBox(height: 24),
             const Text(
               'Institute successfully deleted',
-              style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.w600,
-                color: Colors.black,
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
+            ),
+            const SizedBox(height: 32),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.pushNamedAndRemoveUntil(
+                    context, '/chooseCategory', (route) => false);
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Color(0xFF071952),
+                padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 14),
               ),
+              child: const Text('Go to Dashboard'),
             ),
           ],
         ),

@@ -1,32 +1,32 @@
 import 'package:flutter/material.dart';
 
-// Screens for institute features
-import 'add_institute1.dart';
-import 'add_institute2.dart';
-import 'add_institute3.dart';
-import 'add_institute4.dart';
-import 'institute1.dart';
-import 'institute2.dart';
-import 'institute3.dart';
-import 'institute4.dart';
-import 'institute5.dart'; // Delete confirmation popup
+// Institute files...
+import 'institute1.dart' as inst1;
+import 'institute2.dart' as inst2;
+import 'institute3.dart' as inst3;
+import 'institute4.dart' as inst4;
+import 'institute5.dart' as inst5;
 
-// Screens for labs
-import 'add_lab1.dart';
-import 'add_lab2.dart';
-import 'add_lab3.dart';
-import 'add_lab4.dart';
+// Lab files
 import 'lab1.dart';
 import 'lab2.dart';
 import 'lab3.dart';
 import 'lab4.dart';
-import 'lab5.dart'; // Delete confirmation popup
+import 'lab5.dart'; // popup
 
-// Screens for complaints
+// Add lab/institute & complaints
+import 'add_lab1.dart';
+import 'add_lab2.dart';
+import 'add_lab3.dart';
+import 'add_lab4.dart';
+import 'add_institute1.dart';
+import 'add_institute2.dart';
+import 'add_institute3.dart';
+import 'add_institute4.dart';
 import 'complaints1.dart';
 import 'complaints2.dart';
 
-// Other
+// Categories
 import 'categories.dart';
 
 void main() {
@@ -55,40 +55,36 @@ class MyApp extends StatelessWidget {
           ),
         ),
       ),
-      initialRoute: '/instituteDeleteConfirm',
+      initialRoute: '/chooseCategory',
       routes: {
-        // Categories / Dashboard
+        // Dashboard
         '/chooseCategory': (context) => const ChooseCategoryPage(),
 
-        // Institute flow
+        // Institute
         '/addInstitute': (context) => const AddInstitutePage(),
         '/instituteForm': (context) => const InstituteFormPage(),
         '/success': (context) => const InstituteCreatedScreen(),
         '/fail': (context) => const AddInstituteFailedScreen(),
+        '/instituteList': (context) => const inst1.InstituteListPage(),
+        '/instituteProfile': (context) => const inst2.InstituteProfilePage(),
+        '/instituteUpdated': (context) => const inst3.InstituteUpdatedScreen(),
+        '/instituteDeleted': (context) => const inst4.InstituteDeletedScreen(),
+        '/instituteDeleteConfirm': (context) => const inst5.InstituteDeletePopup(),
 
-        // Lab flow
+        // Lab
         '/addLab': (context) => const AddLabPage(),
         '/labForm': (context) => const LabFormPage(),
         '/labSuccess': (context) => const LabCreatedScreen(),
         '/labFail': (context) => const AddLabFailedScreen(),
-
-        // Complaints
-        '/complaints': (context) => const ComplaintsScreen(),
-        '/notifySuccess': (context) => const NotifySuccessScreen(),
-
-        // Institute management
-        '/instituteList': (context) => const InstituteListPage(),
-        '/instituteProfile': (context) => const InstituteProfilePage(),
-        '/instituteUpdated': (context) => const InstituteUpdatedScreen(),
-        '/instituteDeleted': (context) => const InstituteDeletedScreen(),
-        '/instituteDeleteConfirm': (context) => const InstituteDeletePopup(),
-
-        // Lab management
         '/labList': (context) => const LabListPage(),
         '/labProfile': (context) => const LabProfilePage(),
         '/labUpdated': (context) => const LabUpdatedScreen(),
         '/labDeleted': (context) => const LabDeletedScreen(),
         '/labDeleteConfirm': (context) => const LabDeletePopup(),
+
+        // Complaints
+        '/complaints': (context) => const ComplaintsScreen(),
+        '/notifySuccess': (context) => const NotifySuccessScreen(),
       },
     );
   }
