@@ -1,3 +1,4 @@
+// main.dart
 import 'package:flutter/material.dart';
 
 // Institute files...
@@ -29,6 +30,10 @@ import 'complaints2.dart';
 // Categories
 import 'categories.dart';
 
+// New imports
+import 'medichive_main.dart';
+import 'select_role.dart';
+
 void main() {
   runApp(const MyApp());
 }
@@ -55,9 +60,10 @@ class MyApp extends StatelessWidget {
           ),
         ),
       ),
-      initialRoute: '/chooseCategory',
+      initialRoute:  '/',
       routes: {
-        // Dashboard
+        '/': (context) => const MedichiveMainScreen(),
+        '/selectRole': (context) => const SelectRoleScreen(),
         '/chooseCategory': (context) => const ChooseCategoryPage(),
 
         // Institute

@@ -17,7 +17,7 @@ class _AddLabPageState extends State<AddLabPage> {
 
   void _showError(String message) {
     ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text(message), backgroundColor: Colors.red),
+      SnackBar(content: Text(message), backgroundColor: Colors.red.shade700),
     );
   }
 
@@ -69,125 +69,191 @@ class _AddLabPageState extends State<AddLabPage> {
 
   @override
   Widget build(BuildContext context) {
+    const darkBlue = Color(0xFF071952);
     return Scaffold(
-      backgroundColor: const Color(0xFFEBF4F6),
-      appBar: AppBar(
-        backgroundColor: const Color(0xFFEBF4F6),
-        elevation: 0,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Colors.black),
-          onPressed: () {
-            Navigator.pop(context);
-          },
-        ),
-        centerTitle: true,
-        title: const Text(
-          'Add Lab',
-          style: TextStyle(
-            color: Colors.black,
-            fontWeight: FontWeight.bold,
-            fontSize: 18,
+      backgroundColor: const Color(0xFFF4F7FA),
+      body: SafeArea(
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 24),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // Updated layout: back arrow and ADD LAB title on the left
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      IconButton(
+                        icon: const Icon(Icons.arrow_back, color: darkBlue, size: 28),
+                        onPressed: () => Navigator.pop(context),
+                        splashRadius: 24,
+                      ),
+                      const SizedBox(height: 4),
+                      const Text(
+                        'ADD LAB',
+                        style: TextStyle(
+                          fontWeight: FontWeight.w700,
+                          fontSize: 24,
+                          color: darkBlue,
+                          letterSpacing: 1.5,
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+
+              const SizedBox(height: 32),
+
+              // Card container for form
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 32),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(20),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.05),
+                      blurRadius: 15,
+                      offset: const Offset(0, 8),
+                    ),
+                  ],
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text(
+                      'Basic Info',
+                      style: TextStyle(
+                        fontWeight: FontWeight.w700,
+                        fontSize: 18,
+                        color: darkBlue,
+                      ),
+                    ),
+                    const Divider(height: 20, thickness: 2, color: Color(0xFFEBF1F5)),
+
+                    const SizedBox(height: 14),
+                    _buildTextField(
+                      'Lab Name',
+                      controller: labNameController,
+                      darkBlue: darkBlue,
+                    ),
+                    const SizedBox(height: 16),
+                    _buildTextField(
+                      'Lab Registration Number',
+                      controller: registrationNumberController,
+                      darkBlue: darkBlue,
+                    ),
+
+                    const SizedBox(height: 32),
+
+                    const Text(
+                      'Contact Information',
+                      style: TextStyle(
+                        fontWeight: FontWeight.w700,
+                        fontSize: 18,
+                        color: darkBlue,
+                      ),
+                    ),
+                    const Divider(height: 20, thickness: 2, color: Color(0xFFEBF1F5)),
+
+                    const SizedBox(height: 14),
+                    _buildTextField(
+                      'Mobile Number',
+                      controller: mobileController,
+                      keyboardType: TextInputType.phone,
+                      darkBlue: darkBlue,
+                    ),
+                    const SizedBox(height: 16),
+                    _buildTextField(
+                      'Email Address',
+                      controller: emailController,
+                      keyboardType: TextInputType.emailAddress,
+                      darkBlue: darkBlue,
+                    ),
+                    const SizedBox(height: 16),
+                    _buildTextField(
+                      'Website (optional)',
+                      controller: websiteController,
+                      darkBlue: darkBlue,
+                    ),
+                    const SizedBox(height: 16),
+                    _buildTextField(
+                      'Address',
+                      controller: addressController,
+                      darkBlue: darkBlue,
+                    ),
+
+                    const SizedBox(height: 40),
+
+                    SizedBox(
+                      width: double.infinity,
+                      height: 54,
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: darkBlue,
+                          elevation: 6,
+                          shadowColor: darkBlue.withOpacity(0.6),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          padding: const EdgeInsets.symmetric(vertical: 14),
+                        ),
+                        onPressed: () {
+                          if (_validateInputs()) {
+                            Navigator.pushNamed(context, '/labForm');
+                          }
+                        },
+                        child: const Text(
+                          'NEXT',
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.w700,
+                            letterSpacing: 1.2,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
           ),
-        ),
-      ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          children: [
-            CircleAvatar(
-              radius: 50,
-              backgroundColor: Colors.grey[300],
-              child: Icon(
-                Icons.camera_alt,
-                size: 30,
-                color: Colors.grey[700],
-              ),
-            ),
-            const SizedBox(height: 24),
-
-            const Align(
-              alignment: Alignment.centerLeft,
-              child: Text(
-                'Basic Info',
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 16,
-                ),
-              ),
-            ),
-            const Divider(thickness: 1),
-
-            const SizedBox(height: 12),
-            _buildTextField('Lab Name', controller: labNameController),
-            const SizedBox(height: 12),
-            _buildTextField('Lab Registration Number', controller: registrationNumberController),
-
-            const SizedBox(height: 24),
-
-            const Align(
-              alignment: Alignment.centerLeft,
-              child: Text(
-                'Contact Information',
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 16,
-                ),
-              ),
-            ),
-            const SizedBox(height: 12),
-            _buildTextField('Mobile Number', controller: mobileController, keyboardType: TextInputType.phone),
-            const SizedBox(height: 12),
-            _buildTextField('Email Address', controller: emailController, keyboardType: TextInputType.emailAddress),
-            const SizedBox(height: 12),
-            _buildTextField('Website', controller: websiteController),
-            const SizedBox(height: 12),
-            _buildTextField('Address', controller: addressController),
-
-            const SizedBox(height: 32),
-
-            SizedBox(
-              width: double.infinity,
-              height: 50,
-              child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xFF071952),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                ),
-                onPressed: () {
-                  if (_validateInputs()) {
-                    Navigator.pushNamed(context, '/labForm');
-                  }
-                },
-                child: const Text(
-                  'Next',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 16,
-                  ),
-                ),
-              ),
-            ),
-          ],
         ),
       ),
     );
   }
 
-  static Widget _buildTextField(String hintText,
-      {TextEditingController? controller, TextInputType keyboardType = TextInputType.text}) {
+  static Widget _buildTextField(
+    String hintText, {
+    TextEditingController? controller,
+    TextInputType keyboardType = TextInputType.text,
+    required Color darkBlue,
+  }) {
     return TextField(
       controller: controller,
       keyboardType: keyboardType,
+      style: TextStyle(color: darkBlue, fontSize: 16, fontWeight: FontWeight.w500),
       decoration: InputDecoration(
         hintText: hintText,
+        hintStyle: TextStyle(color: darkBlue.withOpacity(0.5)),
         filled: true,
-        fillColor: Colors.white,
-        contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+        fillColor: const Color(0xFFF7F9FC),
+        contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(8),
+          borderRadius: BorderRadius.circular(12),
+          borderSide: BorderSide.none,
+        ),
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12),
+          borderSide: BorderSide.none,
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12),
+          borderSide: BorderSide(color: darkBlue, width: 2),
         ),
       ),
     );

@@ -11,9 +11,11 @@ class _LabFormPageState extends State<LabFormPage> {
   final TextEditingController aboutController = TextEditingController();
   final TextEditingController certController = TextEditingController();
 
+  static const darkBlue = Color(0xFF071952);
+
   final InputDecoration textFieldDecoration = const InputDecoration(
     filled: true,
-    fillColor: Colors.white,
+    fillColor: Color(0xFFF7F9FC),
     contentPadding: EdgeInsets.all(16),
     border: OutlineInputBorder(
       borderRadius: BorderRadius.all(Radius.circular(12)),
@@ -22,7 +24,6 @@ class _LabFormPageState extends State<LabFormPage> {
   );
 
   void handleCreate() {
-    // About and Certificate are optional, so no validation needed
     Navigator.pushNamed(context, '/labSuccess');
   }
 
@@ -36,58 +37,109 @@ class _LabFormPageState extends State<LabFormPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFEBF4F6),
+      backgroundColor: const Color(0xFFF4F7FA),
       appBar: AppBar(
         elevation: 0,
         backgroundColor: Colors.transparent,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Colors.black87),
+          icon: const Icon(Icons.arrow_back, color: darkBlue, size: 28),
           onPressed: () => Navigator.pop(context),
         ),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(20.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Text('About', style: TextStyle(fontWeight: FontWeight.bold)),
-            const SizedBox(height: 8),
-            TextField(
-              controller: aboutController,
-              maxLines: 3,
-              decoration: textFieldDecoration.copyWith(
-                hintText: 'Add description about the lab (optional)',
-              ),
-            ),
-            const SizedBox(height: 20),
-            const Text('Certificates', style: TextStyle(fontWeight: FontWeight.bold)),
-            const SizedBox(height: 8),
-            TextField(
-              controller: certController,
-              maxLines: 2,
-              decoration: textFieldDecoration.copyWith(
-                hintText: 'Add description about certificates (optional)',
-              ),
-            ),
-            const Spacer(),
-            Center(
-              child: ElevatedButton(
-                onPressed: handleCreate,
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xFF071952),
-                  padding: const EdgeInsets.symmetric(horizontal: 100, vertical: 16),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  elevation: 2,
+      body: SafeArea(
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // Title "LAB FORM" removed from here
+
+              const SizedBox(height: 32),
+
+              Container(
+                padding: const EdgeInsets.all(24),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(20),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.05),
+                      blurRadius: 15,
+                      offset: const Offset(0, 8),
+                    ),
+                  ],
                 ),
-                child: const Text(
-                  'Create',
-                  style: TextStyle(color: Colors.white),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text(
+                      'About the Lab',
+                      style: TextStyle(
+                        fontWeight: FontWeight.w700,
+                        fontSize: 18,
+                        color: darkBlue,
+                      ),
+                    ),
+                    const SizedBox(height: 10),
+                    TextField(
+                      controller: aboutController,
+                      maxLines: 4,
+                      decoration: textFieldDecoration.copyWith(
+                        hintText: 'Add description about the lab (optional)',
+                        hintStyle: TextStyle(color: darkBlue.withOpacity(0.5)),
+                      ),
+                    ),
+
+                    const SizedBox(height: 28),
+
+                    const Text(
+                      'Certificates',
+                      style: TextStyle(
+                        fontWeight: FontWeight.w700,
+                        fontSize: 18,
+                        color: darkBlue,
+                      ),
+                    ),
+                    const SizedBox(height: 10),
+                    TextField(
+                      controller: certController,
+                      maxLines: 3,
+                      decoration: textFieldDecoration.copyWith(
+                        hintText: 'Add details about lab certificates (optional)',
+                        hintStyle: TextStyle(color: darkBlue.withOpacity(0.5)),
+                      ),
+                    ),
+
+                    const SizedBox(height: 40),
+                    SizedBox(
+                      width: double.infinity,
+                      height: 54,
+                      child: ElevatedButton(
+                        onPressed: handleCreate,
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: darkBlue,
+                          elevation: 6,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          padding: const EdgeInsets.symmetric(vertical: 14),
+                        ),
+                        child: const Text(
+                          'SUBMIT',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.w700,
+                            fontSize: 18,
+                            letterSpacing: 1.2,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
