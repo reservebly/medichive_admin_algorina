@@ -62,7 +62,7 @@ class MyApp extends StatelessWidget {
       ),
       initialRoute: '/chooseCategory',
       routes: {
-        '/': (context) => const MedichiveMainScreen(),
+        '/': (context) => const ChooseCategoryPage(),
         // '/selectRole': (context) => const SelectRoleScreen(),
         '/chooseCategory': (context) => const ChooseCategoryPage(),
 
