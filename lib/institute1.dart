@@ -21,7 +21,7 @@ class _InstituteListPageState extends State<InstituteListPage> {
   }
 
   Future<void> fetchInstitutes() async {
-    final url = Uri.parse('http://192.168.43.120:3000/institute');
+    final url = Uri.parse('http://10.10.3.132:3000/institute');
     final response = await http.get(url);
     if (response.statusCode == 200) {
       setState(() {
@@ -36,7 +36,7 @@ class _InstituteListPageState extends State<InstituteListPage> {
   }
 
   Future<void> deleteInstitute(String id) async {
-    final url = Uri.parse('http://192.168.43.120:3000/institute/$id');
+    final url = Uri.parse('http://10.10.3.132:3000/institute/$id');
     final response = await http.delete(url);
     if (response.statusCode == 200) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -61,7 +61,7 @@ class _InstituteListPageState extends State<InstituteListPage> {
   }
 
   Future<void> fetchAndNavigateToInstitute(String id) async {
-    final url = Uri.parse('http://192.168.43.120:3000/institute/$id');
+    final url = Uri.parse('http://10.10.3.132:3000/institute/$id');
     final response = await http.get(url);
     if (response.statusCode == 200) {
       final instituteDetails = json.decode(response.body);
