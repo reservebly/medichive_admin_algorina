@@ -43,18 +43,15 @@ class _LabProfilePageState extends State<LabProfilePage> {
 
   Future<void> fetchLab() async {
     try {
-      print('Fetching lab data for ID: ${widget.labId}');
       final url = Uri.parse('http://10.10.3.132:3000/lab/${widget.labId}');
-      final response = await http.get(
-        url,
-        headers: {"Content-Type": "application/json"},
-      );
+      final response = await http.get(url);
 
       if (response.statusCode == 200) {
         labData = jsonDecode(response.body);
+
         nameController = TextEditingController(text: labData?['name'] ?? '');
         regNumberController = TextEditingController(
-          text: labData?['registrationNumber'] ?? '',
+          text: labData?['registerNumber'] ?? '',
         );
         phoneController = TextEditingController(
           text: labData?['telephoneNumber'] ?? '',
@@ -70,10 +67,12 @@ class _LabProfilePageState extends State<LabProfilePage> {
         certificateController = TextEditingController(
           text: labData?['certificate'] ?? '',
         );
+
         selectedService =
             services.contains(labData?['service'])
                 ? labData!['service']
                 : services[0];
+
         setState(() => isLoading = false);
       } else {
         setState(() {
@@ -94,18 +93,17 @@ class _LabProfilePageState extends State<LabProfilePage> {
 
     final body = jsonEncode({
       "name": nameController.text.trim(),
-      "registrationNumber": regNumberController.text.trim(),
+      "registerNumber": regNumberController.text.trim(),
       "telephoneNumber": phoneController.text.trim(),
       "email": emailController.text.trim(),
       "address": addressController.text.trim(),
       "website": websiteController.text.trim(),
       "about": aboutController.text.trim(),
       "certificate": certificateController.text.trim(),
-      "service": selectedService,
+      // 🚫 Do NOT include 'service'
     });
 
     try {
-      print('Saving changes for lab ID: ${widget.labId}');
       final url = Uri.parse('http://10.10.3.132:3000/lab/${widget.labId}');
       final response = await http.patch(
         url,
@@ -187,13 +185,15 @@ class _LabProfilePageState extends State<LabProfilePage> {
 
   @override
   Widget build(BuildContext context) {
-    if (isLoading)
+    if (isLoading) {
       return const Scaffold(body: Center(child: CircularProgressIndicator()));
-    if (error != null)
+    }
+    if (error != null) {
       return Scaffold(
         appBar: AppBar(title: const Text('Lab Profile')),
         body: Center(child: Text(error!)),
       );
+    }
 
     return Scaffold(
       backgroundColor: const Color(0xFFEBF4F6),
@@ -225,7 +225,7 @@ class _LabProfilePageState extends State<LabProfilePage> {
                 "Services",
                 style: TextStyle(fontWeight: FontWeight.bold),
               ),
-              _buildDropdown(),
+              _buildDropdown(), // Optional UI only
               const Text(
                 "About",
                 style: TextStyle(fontWeight: FontWeight.bold),
