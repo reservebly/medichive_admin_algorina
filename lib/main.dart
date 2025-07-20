@@ -85,7 +85,7 @@ class MyApp extends StatelessWidget {
         '/labSuccess': (context) => const LabCreatedScreen(),
         '/labFail': (context) => const AddLabFailedScreen(),
         '/labList': (context) => const LabListPage(),
-        '/labProfile': (context) => LabProfilePage(labData: {}, labId: 0),
+        '/labProfile': (context) => LabProfilePage(labId: ''),
         '/labUpdated': (context) => const LabUpdatedScreen(),
         '/labDeleted': (context) => const LabDeletedScreen(),
         '/labDeleteConfirm': (context) => const LabDeletePopup(),

@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:medichive_admin_algorina/lab2.dart';
 import 'dart:convert';
 
 class Lab {
-  final String id; // Updated: String instead of int
+  final String id;
   final String name;
   final String address;
 
@@ -38,11 +39,6 @@ class _LabListPageState extends State<LabListPage> {
   }
 
   Future<void> fetchLabs() async {
-    setState(() {
-      isLoading = true;
-      error = null;
-    });
-
     try {
       final response = await http.get(Uri.parse('http://10.10.3.132:3000/lab'));
       if (response.statusCode == 200) {
@@ -53,25 +49,16 @@ class _LabListPageState extends State<LabListPage> {
         });
       } else {
         setState(() {
-          isLoading = false;
           error = 'Server error: ${response.statusCode}';
+          isLoading = false;
         });
       }
     } catch (e) {
       setState(() {
-        isLoading = false;
         error = 'Failed to load labs: $e';
+        isLoading = false;
       });
     }
-  }
-
-  List<Lab> get filteredLabs {
-    if (searchQuery.isEmpty) return labs;
-    return labs.where((lab) {
-      final lowerQuery = searchQuery.toLowerCase();
-      return lab.name.toLowerCase().contains(lowerQuery) ||
-          lab.address.toLowerCase().contains(lowerQuery);
-    }).toList();
   }
 
   Future<void> deleteLab(String id) async {
@@ -99,7 +86,7 @@ class _LabListPageState extends State<LabListPage> {
 
     if (confirmed == true) {
       final response = await http.delete(
-        Uri.parse('http://10.10.3.132:3000/labs/$id'),
+        Uri.parse('http://10.10.3.132:3000/lab/$id'),
       );
       if (response.statusCode == 200) {
         fetchLabs();
@@ -109,13 +96,20 @@ class _LabListPageState extends State<LabListPage> {
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text(
-              'Failed to delete lab. Status: ${response.statusCode}',
-            ),
+            content: Text('Failed to delete lab: ${response.statusCode}'),
           ),
         );
       }
     }
+  }
+
+  List<Lab> get filteredLabs {
+    if (searchQuery.isEmpty) return labs;
+    return labs.where((lab) {
+      final query = searchQuery.toLowerCase();
+      return lab.name.toLowerCase().contains(query) ||
+          lab.address.toLowerCase().contains(query);
+    }).toList();
   }
 
   @override
@@ -165,36 +159,44 @@ class _LabListPageState extends State<LabListPage> {
                           itemCount: filteredLabs.length,
                           itemBuilder: (context, index) {
                             final lab = filteredLabs[index];
-                            return Container(
-                              margin: const EdgeInsets.symmetric(
-                                vertical: 8,
-                                horizontal: 4,
-                              ),
-                              padding: const EdgeInsets.all(12),
-                              decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(12),
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: Colors.black12,
-                                    blurRadius: 4,
+                            return GestureDetector(
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder:
+                                        (_) => LabProfilePage(labId: lab.id),
                                   ),
-                                ],
-                              ),
-                              child: ListTile(
-                                title: Text(
-                                  lab.name,
-                                  style: const TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                  ),
+                                );
+                              },
+                              child: Container(
+                                margin: const EdgeInsets.symmetric(vertical: 8),
+                                padding: const EdgeInsets.all(12),
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(12),
+                                  boxShadow: const [
+                                    BoxShadow(
+                                      color: Colors.black12,
+                                      blurRadius: 4,
+                                    ),
+                                  ],
                                 ),
-                                subtitle: Text(lab.address),
-                                trailing: IconButton(
-                                  icon: const Icon(
-                                    Icons.delete,
-                                    color: Colors.red,
+                                child: ListTile(
+                                  title: Text(
+                                    lab.name,
+                                    style: const TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                    ),
                                   ),
-                                  onPressed: () => deleteLab(lab.id),
+                                  subtitle: Text(lab.address),
+                                  trailing: IconButton(
+                                    icon: const Icon(
+                                      Icons.delete,
+                                      color: Colors.red,
+                                    ),
+                                    onPressed: () => deleteLab(lab.id),
+                                  ),
                                 ),
                               ),
                             );
