@@ -17,7 +17,6 @@ import 'lab5.dart'; // popup
 
 // Add lab/institute & complaints
 import 'add_lab1.dart';
-import 'add_lab2.dart';
 import 'add_lab3.dart';
 import 'add_lab4.dart';
 import 'add_institute1.dart';
@@ -46,6 +45,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Hospital Management System',
+
       theme: ThemeData(
         scaffoldBackgroundColor: const Color(0xFFEBF4F6),
         fontFamily: 'Arial',
@@ -60,10 +60,10 @@ class MyApp extends StatelessWidget {
           ),
         ),
       ),
-      initialRoute:  '/',
+      initialRoute: '/chooseCategory',
       routes: {
         '/': (context) => const MedichiveMainScreen(),
-        '/selectRole': (context) => const SelectRoleScreen(),
+        // '/selectRole': (context) => const SelectRoleScreen(),
         '/chooseCategory': (context) => const ChooseCategoryPage(),
 
         // Institute
@@ -72,18 +72,20 @@ class MyApp extends StatelessWidget {
         '/success': (context) => const InstituteCreatedScreen(),
         '/fail': (context) => const AddInstituteFailedScreen(),
         '/instituteList': (context) => const inst1.InstituteListPage(),
-        '/instituteProfile': (context) => const inst2.InstituteProfilePage(),
+
         '/instituteUpdated': (context) => const inst3.InstituteUpdatedScreen(),
         '/instituteDeleted': (context) => const inst4.InstituteDeletedScreen(),
-        '/instituteDeleteConfirm': (context) => const inst5.InstituteDeletePopup(),
+        '/instituteDeleteConfirm':
+            (context) => const inst5.InstituteDeletePopup(),
 
         // Lab
-        '/addLab': (context) => const AddLabPage(),
-        '/labForm': (context) => const LabFormPage(),
+        '/addLab': (context) => const AddLabFullPage(),
+
+        ///'/labForm': (context) => const LabFormPage(),
         '/labSuccess': (context) => const LabCreatedScreen(),
         '/labFail': (context) => const AddLabFailedScreen(),
         '/labList': (context) => const LabListPage(),
-        '/labProfile': (context) => const LabProfilePage(),
+        '/labProfile': (context) => LabProfilePage(labData: {}, labId: 0),
         '/labUpdated': (context) => const LabUpdatedScreen(),
         '/labDeleted': (context) => const LabDeletedScreen(),
         '/labDeleteConfirm': (context) => const LabDeletePopup(),

@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
-class AddLabPage extends StatefulWidget {
-  const AddLabPage({super.key});
+class AddLabFullPage extends StatefulWidget {
+  const AddLabFullPage({super.key});
 
   @override
-  State<AddLabPage> createState() => _AddLabPageState();
+  State<AddLabFullPage> createState() => _AddLabFullPageState();
 }
 
-class _AddLabPageState extends State<AddLabPage> {
+class _AddLabFullPageState extends State<AddLabFullPage> {
   final TextEditingController labNameController = TextEditingController();
   final TextEditingController registrationNumberController = TextEditingController();
   final TextEditingController mobileController = TextEditingController();
@@ -78,36 +78,24 @@ class _AddLabPageState extends State<AddLabPage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Updated layout: back arrow and ADD LAB title on the left
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      IconButton(
-                        icon: const Icon(Icons.arrow_back, color: darkBlue, size: 28),
-                        onPressed: () => Navigator.pop(context),
-                        splashRadius: 24,
-                      ),
-                      const SizedBox(height: 4),
-                      const Text(
-                        'ADD LAB',
-                        style: TextStyle(
-                          fontWeight: FontWeight.w700,
-                          fontSize: 24,
-                          color: darkBlue,
-                          letterSpacing: 1.5,
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
+              IconButton(
+                icon: const Icon(Icons.arrow_back, color: darkBlue, size: 28),
+                onPressed: () => Navigator.pop(context),
+                splashRadius: 24,
               ),
-
+              const SizedBox(height: 4),
+              Center(
+                child: Text(
+                  'Add Lab',
+                  style: TextStyle(
+                    fontWeight: FontWeight.w700,
+                    fontSize: 24,
+                    color: darkBlue,
+                    letterSpacing: 1.1,
+                  ),
+                ),
+              ),
               const SizedBox(height: 32),
-
-              // Card container for form
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 32),
                 decoration: BoxDecoration(
@@ -126,39 +114,20 @@ class _AddLabPageState extends State<AddLabPage> {
                   children: [
                     const Text(
                       'Basic Info',
-                      style: TextStyle(
-                        fontWeight: FontWeight.w700,
-                        fontSize: 18,
-                        color: darkBlue,
-                      ),
+                      style: TextStyle(fontWeight: FontWeight.w700, fontSize: 18, color: darkBlue),
                     ),
                     const Divider(height: 20, thickness: 2, color: Color(0xFFEBF1F5)),
-
                     const SizedBox(height: 14),
-                    _buildTextField(
-                      'Lab Name',
-                      controller: labNameController,
-                      darkBlue: darkBlue,
-                    ),
+                    _buildTextField('Lab Name', controller: labNameController, darkBlue: darkBlue),
                     const SizedBox(height: 16),
-                    _buildTextField(
-                      'Lab Registration Number',
-                      controller: registrationNumberController,
-                      darkBlue: darkBlue,
-                    ),
+                    _buildTextField('Lab Registration Number', controller: registrationNumberController, darkBlue: darkBlue),
 
                     const SizedBox(height: 32),
-
                     const Text(
                       'Contact Information',
-                      style: TextStyle(
-                        fontWeight: FontWeight.w700,
-                        fontSize: 18,
-                        color: darkBlue,
-                      ),
+                      style: TextStyle(fontWeight: FontWeight.w700, fontSize: 18, color: darkBlue),
                     ),
                     const Divider(height: 20, thickness: 2, color: Color(0xFFEBF1F5)),
-
                     const SizedBox(height: 14),
                     _buildTextField(
                       'Mobile Number',
@@ -187,7 +156,6 @@ class _AddLabPageState extends State<AddLabPage> {
                     ),
 
                     const SizedBox(height: 40),
-
                     SizedBox(
                       width: double.infinity,
                       height: 54,
@@ -203,11 +171,11 @@ class _AddLabPageState extends State<AddLabPage> {
                         ),
                         onPressed: () {
                           if (_validateInputs()) {
-                            Navigator.pushNamed(context, '/labForm');
+                            Navigator.pushNamed(context, '/labForm'); // or submit directly if needed
                           }
                         },
                         child: const Text(
-                          'NEXT',
+                          'Next',
                           style: TextStyle(
                             fontSize: 18,
                             fontWeight: FontWeight.w700,

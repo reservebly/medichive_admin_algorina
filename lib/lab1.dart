@@ -1,169 +1,181 @@
 import 'package:flutter/material.dart';
-import 'lab5.dart'; // Import popup
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
-class LabListPage extends StatelessWidget {
+class Lab {
+  final int id;
+  final String name;
+  final String address;
+
+  Lab({required this.id, required this.name, required this.address});
+
+  factory Lab.fromJson(Map<String, dynamic> json) {
+    return Lab(
+      id: json['id'],
+      name: json['name'],
+      address: json['address'] ?? 'No address',
+    );
+  }
+}
+
+class LabListPage extends StatefulWidget {
   const LabListPage({super.key});
 
-  final List<Map<String, String>> labs = const [
-    {"name": "Sethma Lab", "location": "Kandy"},
-    {"name": "Hemas Diagnostic", "location": "Colombo"},
-    {"name": "Lanka Lab", "location": "Galle"},
-    {"name": "CarePoint Lab", "location": "Matara"},
-    {"name": "MediScan", "location": "Negombo"},
-    {"name": "Wellness Lab", "location": "Colombo"},
-    {"name": "Alpha Lab", "location": "Jaffna"},
-    {"name": "Prime Lab", "location": "Kurunegala"},
-    {"name": "Omega Diagnostics", "location": "Anuradhapura"},
-  ];
+  @override
+  State<LabListPage> createState() => _LabListPageState();
+}
+
+class _LabListPageState extends State<LabListPage> {
+  List<Lab> labs = [];
+  String searchQuery = '';
+  bool isLoading = true;
+  String? error;
+
+  @override
+  void initState() {
+    super.initState();
+    fetchLabs();
+  }
+
+  Future<void> fetchLabs() async {
+    try {
+      final response =
+          await http.get(Uri.parse('http:// 192.168.43.120:3000/labs'));
+      if (response.statusCode == 200) {
+        final List<dynamic> labsJson = jsonDecode(response.body);
+        setState(() {
+          labs = labsJson.map((json) => Lab.fromJson(json)).toList();
+          isLoading = false;
+          error = null;
+        });
+      } else {
+        setState(() => error = 'Server error: ${response.statusCode}');
+      }
+    } catch (e) {
+      setState(() => error = 'Failed to load labs: $e');
+    }
+  }
+
+  List<Lab> get filteredLabs {
+    if (searchQuery.isEmpty) return labs;
+    return labs.where((lab) {
+      final lowerQuery = searchQuery.toLowerCase();
+      return lab.name.toLowerCase().contains(lowerQuery) ||
+          lab.address.toLowerCase().contains(lowerQuery);
+    }).toList();
+  }
+
+  Future<void> deleteLab(int id) async {
+    final confirmed = await showDialog<bool>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Confirm Deletion'),
+        content: const Text('Are you sure you want to delete this lab?'),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context, false),
+            child: const Text('Cancel'),
+          ),
+          TextButton(
+            onPressed: () => Navigator.pop(context, true),
+            child: const Text('Confirm', style: TextStyle(color: Colors.red)),
+          ),
+        ],
+      ),
+    );
+
+    if (confirmed == true) {
+      final response =
+          await http.delete(Uri.parse('http://10.10.3.132:3000/labs/$id'));
+      if (response.statusCode == 200) {
+        fetchLabs();
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Lab deleted successfully')),
+        );
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+              content: Text(
+                  'Failed to delete lab. Status: ${response.statusCode}')),
+        );
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
-    const int crossAxisCount = 3; // 3 boxes per row
-    const double spacing = 32;    // spacing between boxes
-
     return Scaffold(
       backgroundColor: const Color(0xFFEBF4F6),
-
       body: SafeArea(
         child: Padding(
-          padding: EdgeInsets.all(spacing),
+          padding: const EdgeInsets.all(16),
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,  // align title left
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Title aligned left
-              Text(
+              const Text(
                 'LABS',
-                style: const TextStyle(
+                style: TextStyle(
                   color: Color(0xFF071952),
                   fontSize: 28,
-                  fontWeight: FontWeight.w900,
-                  letterSpacing: 2,
+                  fontWeight: FontWeight.bold,
                 ),
               ),
-
-              const SizedBox(height: 20),
-
-              // Search bar
+              const SizedBox(height: 16),
               TextField(
+                onChanged: (value) => setState(() => searchQuery = value),
                 decoration: InputDecoration(
-                  prefixIcon: const Icon(Icons.search, color: Colors.grey),
+                  prefixIcon: const Icon(Icons.search),
                   hintText: 'Search labs',
-                  hintStyle: const TextStyle(color: Colors.grey),
                   filled: true,
                   fillColor: Colors.white,
-                  contentPadding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+                  contentPadding:
+                      const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(24),
                     borderSide: BorderSide.none,
                   ),
                 ),
               ),
-
-              const SizedBox(height: 20),
-
-              // Grid of Labs (3 per row)
+              const SizedBox(height: 16),
               Expanded(
-                child: LayoutBuilder(
-                  builder: (context, constraints) {
-                    double totalSpacing = (crossAxisCount - 1) * spacing;
-                    double itemWidth = (constraints.maxWidth - totalSpacing) / crossAxisCount;
-                    double itemHeight = 110; // smaller height for smaller boxes
-
-                    return GridView.builder(
-                      physics: const NeverScrollableScrollPhysics(), // no scrolling
-                      itemCount: labs.length,
-                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: crossAxisCount,
-                        mainAxisSpacing: spacing,
-                        crossAxisSpacing: spacing,
-                        childAspectRatio: itemWidth / itemHeight,
-                      ),
-                      itemBuilder: (context, index) {
-                        final lab = labs[index];
-                        return Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(14),
-                            border: Border.all(color: const Color(0xFF071952).withOpacity(0.15), width: 1.2),
-                          ),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              // Wrap lab name with GestureDetector to navigate on tap
-                              GestureDetector(
-                                onTap: () {
-                                  Navigator.pushNamed(context, '/labProfile');
-                                },
-                                child: Text(
-                                  lab["name"]!.toUpperCase(),
-                                  style: const TextStyle(
-                                    color: Color(0xFF071952),
-                                    fontWeight: FontWeight.w800,
-                                    fontSize: 14,
-                                    letterSpacing: 1,
-                                  ),
-                                  maxLines: 1,
-                                  overflow: TextOverflow.ellipsis,
+                child: isLoading
+                    ? const Center(child: CircularProgressIndicator())
+                    : error != null
+                        ? Center(child: Text(error!))
+                        : ListView.builder(
+                            itemCount: filteredLabs.length,
+                            itemBuilder: (context, index) {
+                              final lab = filteredLabs[index];
+                              return Container(
+                                margin: const EdgeInsets.symmetric(
+                                    vertical: 8, horizontal: 4),
+                                padding: const EdgeInsets.all(12),
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(12),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.black12,
+                                      blurRadius: 4,
+                                    )
+                                  ],
                                 ),
-                              ),
-
-                              const SizedBox(height: 4),
-
-                              Text(
-                                lab["location"]!,
-                                style: const TextStyle(
-                                  color: Colors.grey,
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.w500,
+                                child: ListTile(
+                                  title: Text(
+                                    lab.name,
+                                    style: const TextStyle(
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                  subtitle: Text(lab.address),
+                                  trailing: IconButton(
+                                    icon: const Icon(Icons.delete,
+                                        color: Colors.red),
+                                    onPressed: () => deleteLab(lab.id),
+                                  ),
                                 ),
-                              ),
-                              const Spacer(),
-
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.end,
-                                children: [
-                                  ElevatedButton(
-                                    onPressed: () {
-                                      showDialog(
-                                        context: context,
-                                        builder: (context) => const LabDeletePopup(),
-                                      );
-                                    },
-                                    style: ElevatedButton.styleFrom(
-                                      backgroundColor: Colors.red,
-                                      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(8),
-                                      ),
-                                      textStyle: const TextStyle(fontSize: 11),
-                                    ),
-                                    child: const Text("Delete", style: TextStyle(color: Colors.white)),
-                                  ),
-                                  const SizedBox(width: 6),
-                                  ElevatedButton(
-                                    onPressed: () {
-                                      Navigator.pushNamed(context, '/labProfile');
-                                    },
-                                    style: ElevatedButton.styleFrom(
-                                      backgroundColor: Colors.green,
-                                      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(8),
-                                      ),
-                                      textStyle: const TextStyle(fontSize: 11),
-                                    ),
-                                    child: const Text("Update", style: TextStyle(color: Colors.white)),
-                                  ),
-                                ],
-                              )
-                            ],
+                              );
+                            },
                           ),
-                        );
-                      },
-                    );
-                  },
-                ),
               ),
             ],
           ),
