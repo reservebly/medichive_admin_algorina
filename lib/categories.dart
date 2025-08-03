@@ -6,11 +6,23 @@ class ChooseCategoryPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFEBF4F6),
+      backgroundColor: const Color.from(alpha: 1, red: 0.922, green: 0.957, blue: 0.965),
       appBar: AppBar(
-        backgroundColor: Colors.white,
-        elevation: 0,
-        toolbarHeight: 0,
+        backgroundColor: const Color.fromARGB(255, 255, 255, 255),
+        elevation: 1,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back, color: Colors.black),
+          onPressed: () {
+            Navigator.pop(context); // Go back to SelectRoleScreen
+          },
+        ),
+        title: const Text(
+          "Choose Category",
+          style: TextStyle(
+            color: Colors.black,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
       ),
       body: Center(
         child: SingleChildScrollView(
@@ -29,6 +41,12 @@ class ChooseCategoryPage extends StatelessWidget {
                 context,
                 "Complaints and Support",
                 navigateTo: '/complaints',
+              ),
+              const SizedBox(height: 16),
+              _buildCategoryButton(
+                context,
+                "Analytics Summary",
+                navigateTo: '/analytics',
               ),
             ],
           ),
@@ -53,8 +71,6 @@ class ChooseCategoryPage extends StatelessWidget {
         onPressed: () {
           if (navigateTo != null) {
             Navigator.pushNamed(context, navigateTo);
-          } else {
-            // No action defined yet
           }
         },
         child: Text(

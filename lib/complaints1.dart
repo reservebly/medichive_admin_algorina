@@ -1,26 +1,45 @@
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
-class ComplaintsScreen extends StatelessWidget {
+class ComplaintsScreen extends StatefulWidget {
   const ComplaintsScreen({super.key});
 
-  final List<Map<String, String>> complaints = const [
-    {
-      "hospitalName": "Adali Hospital",
-      "complaintText": "Lorem ipsum has been the industry's standard dummy text since the 1500s."
-    },
-    {
-      "hospitalName": "Kandy Medical Center",
-      "complaintText": "They delayed my appointment by 3 hours with no explanation."
-    },
-    {
-      "hospitalName": "Wellness Clinic",
-      "complaintText": "Very poor service. The lab was not functioning as expected."
-    },
-    {
-      "hospitalName": "Nova Health",
-      "complaintText": "The pharmacy provided incorrect medication twice."
-    },
-  ];
+  @override
+  State<ComplaintsScreen> createState() => _ComplaintsScreenState();
+}
+
+class _ComplaintsScreenState extends State<ComplaintsScreen> {
+  List<dynamic> complaints = [];
+  bool isLoading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    fetchComplaints();
+  }
+
+  Future<void> fetchComplaints() async {
+    const url = 'http://10.74.27.42.120:3000/complaint';
+
+    try {
+      final response = await http.get(Uri.parse(url));
+      if (response.statusCode == 200) {
+        final data = json.decode(response.body);
+        setState(() {
+          complaints = data;
+          isLoading = false;
+        });
+      } else {
+        throw Exception('Failed to load complaints');
+      }
+    } catch (e) {
+      print('Error fetching complaints: $e');
+      setState(() {
+        isLoading = false;
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -71,17 +90,21 @@ class ComplaintsScreen extends StatelessWidget {
 
             // Complaints List
             Expanded(
-              child: ListView.builder(
-                padding: const EdgeInsets.symmetric(horizontal: 16),
-                itemCount: complaints.length,
-                itemBuilder: (context, index) {
-                  final item = complaints[index];
-                  return ComplaintItem(
-                    hospitalName: item["hospitalName"]!,
-                    complaintText: item["complaintText"]!,
-                  );
-                },
-              ),
+              child: isLoading
+                  ? const Center(child: CircularProgressIndicator())
+                  : complaints.isEmpty
+                      ? const Center(child: Text("No complaints found"))
+                      : ListView.builder(
+                          padding: const EdgeInsets.symmetric(horizontal: 16),
+                          itemCount: complaints.length,
+                          itemBuilder: (context, index) {
+                            final item = complaints[index];
+                            return ComplaintItem(
+                              hospitalName: item['source'] ?? 'Unknown Source',
+                              complaintText: item['complain'] ?? 'No details',
+                            );
+                          },
+                        ),
             ),
           ],
         ),
@@ -90,6 +113,7 @@ class ComplaintsScreen extends StatelessWidget {
   }
 }
 
+// Complaint Item Widget
 class ComplaintItem extends StatelessWidget {
   final String hospitalName;
   final String complaintText;
@@ -167,3 +191,4 @@ class ComplaintItem extends StatelessWidget {
     );
   }
 }
+

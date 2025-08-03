@@ -34,7 +34,7 @@ class _InstituteFormPageState extends State<InstituteFormPage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Back arrow only
+              
               IconButton(
                 icon: const Icon(Icons.arrow_back, color: darkBlue, size: 28),
                 onPressed: () => Navigator.pop(context),
@@ -43,7 +43,7 @@ class _InstituteFormPageState extends State<InstituteFormPage> {
 
               const SizedBox(height: 24),
 
-              // Card container with form
+              
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 32),
                 decoration: BoxDecoration(
@@ -88,7 +88,7 @@ class _InstituteFormPageState extends State<InstituteFormPage> {
                     ),
                     const SizedBox(height: 12),
                     _buildMultilineField(
-                      hintText: 'Add description about certificates (optional)',
+                      hintText: 'Add description about certificates',
                       controller: certController,
                       darkBlue: darkBlue,
                       maxLines: 3,

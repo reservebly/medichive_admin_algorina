@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:medichive_admin_algorina/lab2.dart';
+import 'package:medichive_admin_algorina/categories.dart'; // Import CategoriesPage
 import 'dart:convert';
 
 class Lab {
@@ -40,7 +41,7 @@ class _LabListPageState extends State<LabListPage> {
 
   Future<void> fetchLabs() async {
     try {
-      final response = await http.get(Uri.parse('http://10.10.3.132:3000/lab'));
+      final response = await http.get(Uri.parse('http://10.74.27.42:3000/lab'));
       if (response.statusCode == 200) {
         final List<dynamic> labsJson = jsonDecode(response.body);
         setState(() {
@@ -64,29 +65,28 @@ class _LabListPageState extends State<LabListPage> {
   Future<void> deleteLab(String id) async {
     final confirmed = await showDialog<bool>(
       context: context,
-      builder:
-          (context) => AlertDialog(
-            title: const Text('Confirm Deletion'),
-            content: const Text('Are you sure you want to delete this lab?'),
-            actions: [
-              TextButton(
-                onPressed: () => Navigator.pop(context, false),
-                child: const Text('Cancel'),
-              ),
-              TextButton(
-                onPressed: () => Navigator.pop(context, true),
-                child: const Text(
-                  'Confirm',
-                  style: TextStyle(color: Colors.red),
-                ),
-              ),
-            ],
+      builder: (context) => AlertDialog(
+        title: const Text('Confirm Deletion'),
+        content: const Text('Are you sure you want to delete this lab?'),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context, false),
+            child: const Text('Cancel'),
           ),
+          TextButton(
+            onPressed: () => Navigator.pop(context, true),
+            child: const Text(
+              'Confirm',
+              style: TextStyle(color: Colors.red),
+            ),
+          ),
+        ],
+      ),
     );
 
     if (confirmed == true) {
       final response = await http.delete(
-        Uri.parse('http://10.10.3.132:3000/lab/$id'),
+        Uri.parse('http://10.74.27.42:3000/lab/$id'),
       );
       if (response.statusCode == 200) {
         fetchLabs();
@@ -122,6 +122,22 @@ class _LabListPageState extends State<LabListPage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              // Back Arrow to CategoriesPage
+              Align(
+                alignment: Alignment.centerLeft,
+                child: IconButton(
+                  icon: const Icon(Icons.arrow_back, color: Color(0xFF071952)),
+                  onPressed: () {
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const ChooseCategoryPage()),
+                    );
+                  },
+                ),
+              ),
+              const SizedBox(height: 8),
+
               const Text(
                 'LABS',
                 style: TextStyle(
@@ -131,6 +147,7 @@ class _LabListPageState extends State<LabListPage> {
                 ),
               ),
               const SizedBox(height: 16),
+
               TextField(
                 onChanged: (value) => setState(() => searchQuery = value),
                 decoration: InputDecoration(
@@ -149,59 +166,60 @@ class _LabListPageState extends State<LabListPage> {
                 ),
               ),
               const SizedBox(height: 16),
+
               Expanded(
-                child:
-                    isLoading
-                        ? const Center(child: CircularProgressIndicator())
-                        : error != null
+                child: isLoading
+                    ? const Center(child: CircularProgressIndicator())
+                    : error != null
                         ? Center(child: Text(error!))
                         : ListView.builder(
-                          itemCount: filteredLabs.length,
-                          itemBuilder: (context, index) {
-                            final lab = filteredLabs[index];
-                            return GestureDetector(
-                              onTap: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder:
-                                        (_) => LabProfilePage(labId: lab.id),
-                                  ),
-                                );
-                              },
-                              child: Container(
-                                margin: const EdgeInsets.symmetric(vertical: 8),
-                                padding: const EdgeInsets.all(12),
-                                decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  borderRadius: BorderRadius.circular(12),
-                                  boxShadow: const [
-                                    BoxShadow(
-                                      color: Colors.black12,
-                                      blurRadius: 4,
+                            itemCount: filteredLabs.length,
+                            itemBuilder: (context, index) {
+                              final lab = filteredLabs[index];
+                              return GestureDetector(
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (_) =>
+                                          LabProfilePage(labId: lab.id),
                                     ),
-                                  ],
+                                  );
+                                },
+                                child: Container(
+                                  margin:
+                                      const EdgeInsets.symmetric(vertical: 8),
+                                  padding: const EdgeInsets.all(12),
+                                  decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    borderRadius: BorderRadius.circular(12),
+                                    boxShadow: const [
+                                      BoxShadow(
+                                        color: Colors.black12,
+                                        blurRadius: 4,
+                                      ),
+                                    ],
+                                  ),
+                                  child: ListTile(
+                                    title: Text(
+                                      lab.name,
+                                      style: const TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                    subtitle: Text(lab.address),
+                                    trailing: IconButton(
+                                      icon: const Icon(
+                                        Icons.delete,
+                                        color: Colors.red,
+                                      ),
+                                      onPressed: () => deleteLab(lab.id),
+                                    ),
+                                  ),
                                 ),
-                                child: ListTile(
-                                  title: Text(
-                                    lab.name,
-                                    style: const TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                  subtitle: Text(lab.address),
-                                  trailing: IconButton(
-                                    icon: const Icon(
-                                      Icons.delete,
-                                      color: Colors.red,
-                                    ),
-                                    onPressed: () => deleteLab(lab.id),
-                                  ),
-                                ),
-                              ),
-                            );
-                          },
-                        ),
+                              );
+                            },
+                          ),
               ),
             ],
           ),

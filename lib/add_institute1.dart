@@ -35,7 +35,7 @@ class _AddInstitutePageState extends State<AddInstitutePage> {
   Future<void> _submitForm() async {
     if (!_formKey.currentState!.validate()) return;
 
-    final url = Uri.parse('http://10.10.3.132:3000/institute');
+    final url = Uri.parse('http://10.74.27.42:3000/institute');
 
     final Map<String, String> body = {
       "name": nameController.text.trim(),
@@ -57,7 +57,7 @@ class _AddInstitutePageState extends State<AddInstitutePage> {
 
       if (response.statusCode == 201 || response.statusCode == 200) {
         _showSnack("Institute created successfully!");
-        Navigator.pop(context); // or navigate to success screen
+        Navigator.pop(context); 
       } else {
         _showSnack(
           "Failed to create institute: ${response.body}",
@@ -161,7 +161,7 @@ class _AddInstitutePageState extends State<AddInstitutePage> {
             validator: _emailValidator,
           ),
           const SizedBox(height: 16),
-          _buildTextField(websiteController, 'Website (optional)'),
+          _buildTextField(websiteController, 'Website'),
           const SizedBox(height: 16),
           _buildTextField(
             addressController,
@@ -170,11 +170,11 @@ class _AddInstitutePageState extends State<AddInstitutePage> {
           ),
           const SizedBox(height: 28),
           _sectionTitle('Additional Info'),
-          _buildTextField(aboutController, 'About (optional)', maxLines: 3),
+          _buildTextField(aboutController, 'About ', maxLines: 3),
           const SizedBox(height: 16),
           _buildTextField(
             certificateController,
-            'Certificate (optional)',
+            'Certificate ',
             maxLines: 2,
           ),
           const SizedBox(height: 32),

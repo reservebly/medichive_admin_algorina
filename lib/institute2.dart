@@ -43,7 +43,7 @@ class _InstituteProfilePageState extends State<InstituteProfilePage> {
 
   Future<void> updateInstitute() async {
     final String id = widget.instituteData['id'];
-    final url = Uri.parse('http://192.168.43.120:3000/institute/$id');
+    final url = Uri.parse('http://10.74.27.42:3000/institute/$id');
 
     final updatedData = {
       "name": nameController.text,

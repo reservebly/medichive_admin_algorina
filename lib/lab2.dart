@@ -43,7 +43,7 @@ class _LabProfilePageState extends State<LabProfilePage> {
 
   Future<void> fetchLab() async {
     try {
-      final url = Uri.parse('http://10.10.3.132:3000/lab/${widget.labId}');
+      final url = Uri.parse('http://10.74.27.42:3000/lab/${widget.labId}');
       final response = await http.get(url);
 
       if (response.statusCode == 200) {
@@ -104,7 +104,7 @@ class _LabProfilePageState extends State<LabProfilePage> {
     });
 
     try {
-      final url = Uri.parse('http://10.10.3.132:3000/lab/${widget.labId}');
+      final url = Uri.parse('http://10.74.27.42:3000/lab/${widget.labId}');
       final response = await http.patch(
         url,
         headers: {"Content-Type": "application/json"},

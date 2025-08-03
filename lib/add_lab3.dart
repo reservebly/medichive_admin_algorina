@@ -35,7 +35,8 @@ class LabCreatedScreen extends StatelessWidget {
             const SizedBox(height: 32),
             ElevatedButton(
               onPressed: () {
-                 Navigator.pushReplacementNamed(context, '/categories');
+                // ✅ Correct route name for categories
+                Navigator.pushReplacementNamed(context, '/chooseCategory');
               },
               style: ElevatedButton.styleFrom(
                 backgroundColor: const Color(0xFF071952), // dark blue

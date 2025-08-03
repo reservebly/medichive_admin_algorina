@@ -1,4 +1,3 @@
-// main.dart
 import 'package:flutter/material.dart';
 
 // Institute files...
@@ -29,9 +28,12 @@ import 'complaints2.dart';
 // Categories
 import 'categories.dart';
 
-// New imports
-import 'medichive_main.dart';
-import 'select_role.dart';
+// Analytics
+import 'analytics.dart';
+
+// New welcome and role-select screens
+import 'welcome.dart';
+import 'selectrole.dart';
 
 void main() {
   runApp(const MyApp());
@@ -45,7 +47,6 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Hospital Management System',
-
       theme: ThemeData(
         scaffoldBackgroundColor: const Color(0xFFEBF4F6),
         fontFamily: 'Arial',
@@ -60,10 +61,16 @@ class MyApp extends StatelessWidget {
           ),
         ),
       ),
-      initialRoute: '/chooseCategory',
+
+      /// 🔰 Set welcome screen as the initial route
+      initialRoute: '/welcome',
+
       routes: {
-        '/': (context) => const ChooseCategoryPage(),
-        // '/selectRole': (context) => const SelectRoleScreen(),
+        // Welcome & role select
+        '/welcome': (context) => WelcomeScreen(),
+        '/selectRole': (context) => SelectRoleScreen(),
+
+        // Categories
         '/chooseCategory': (context) => const ChooseCategoryPage(),
 
         // Institute
@@ -72,17 +79,14 @@ class MyApp extends StatelessWidget {
         '/success': (context) => const InstituteCreatedScreen(),
         '/fail': (context) => const AddInstituteFailedScreen(),
         '/instituteList': (context) => const inst1.InstituteListPage(),
-
         '/instituteUpdated': (context) => const inst3.InstituteUpdatedScreen(),
         '/instituteDeleted': (context) => const inst4.InstituteDeletedScreen(),
-        '/instituteDeleteConfirm':
-            (context) => const inst5.InstituteDeletePopup(),
+        '/instituteDeleteConfirm': (context) => const inst5.InstituteDeletePopup(),
 
-        // Lab
+        // Labs
         '/addLab': (context) => const AddLabFullPage(),
-
-        ///'/labForm': (context) => const LabFormPage(),
         '/labSuccess': (context) => const LabCreatedScreen(),
+        '/labCreated': (context) => const LabCreatedScreen(), // ✅ Added this
         '/labFail': (context) => const AddLabFailedScreen(),
         '/labList': (context) => const LabListPage(),
         '/labProfile': (context) => LabProfilePage(labId: ''),
@@ -93,6 +97,9 @@ class MyApp extends StatelessWidget {
         // Complaints
         '/complaints': (context) => const ComplaintsScreen(),
         '/notifySuccess': (context) => const NotifySuccessScreen(),
+
+        // Analytics
+        '/analytics': (context) => const AnalyticsPage(),
       },
     );
   }
