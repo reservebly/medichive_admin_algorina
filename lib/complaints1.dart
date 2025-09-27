@@ -20,7 +20,7 @@ class _ComplaintsScreenState extends State<ComplaintsScreen> {
   }
 
   Future<void> fetchComplaints() async {
-    const url = 'http://10.74.27.42.120:3000/complaint';
+    const url = 'http://192.168.43.120:3000/complaint';
 
     try {
       final response = await http.get(Uri.parse(url));
@@ -48,7 +48,7 @@ class _ComplaintsScreenState extends State<ComplaintsScreen> {
       body: SafeArea(
         child: Column(
           children: [
-            // Top Bar with Back Arrow
+            
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
               child: Row(

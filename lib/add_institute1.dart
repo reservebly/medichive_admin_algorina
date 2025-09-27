@@ -35,7 +35,7 @@ class _AddInstitutePageState extends State<AddInstitutePage> {
   Future<void> _submitForm() async {
     if (!_formKey.currentState!.validate()) return;
 
-    final url = Uri.parse('http://10.74.27.42:3000/institute');
+    final url = Uri.parse('http://192.168.43.120:3000/institute');
 
     final Map<String, String> body = {
       "name": nameController.text.trim(),

@@ -6,7 +6,7 @@ class InstituteDeletePopup extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      backgroundColor: const Color(0xFFEBF4F6), // Light background color inside dialog
+      backgroundColor: const Color(0xFFEBF4F6), 
       title: const Text(
         'Delete Institute',
         style: TextStyle(fontWeight: FontWeight.bold),
@@ -19,8 +19,8 @@ class InstituteDeletePopup extends StatelessWidget {
       actions: [
         ElevatedButton(
           onPressed: () {
-            Navigator.pop(context); // Close the popup dialog
-            Navigator.pushNamed(context, '/cancelledInstituteList'); // Navigate on Cancel
+            Navigator.pop(context); 
+            Navigator.pushNamed(context, '/cancelledInstituteList'); 
           },
           style: ElevatedButton.styleFrom(
             backgroundColor: Colors.grey.shade400,
@@ -36,8 +36,8 @@ class InstituteDeletePopup extends StatelessWidget {
         const SizedBox(width: 12),
         ElevatedButton(
           onPressed: () {
-            Navigator.pop(context); // Close the popup dialog
-            Navigator.pushNamed(context, '/instituteDeleted'); // Navigate on Delete
+            Navigator.pop(context); 
+            Navigator.pushNamed(context, '/instituteDeleted'); 
           },
           style: ElevatedButton.styleFrom(
             backgroundColor: Colors.red,

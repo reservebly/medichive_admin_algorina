@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:medichive_admin_algorina/lab2.dart';
-import 'package:medichive_admin_algorina/categories.dart'; // Import CategoriesPage
+import 'package:medichive_admin_algorina/categories.dart'; 
 import 'dart:convert';
 
 class Lab {
@@ -41,7 +41,7 @@ class _LabListPageState extends State<LabListPage> {
 
   Future<void> fetchLabs() async {
     try {
-      final response = await http.get(Uri.parse('http://10.74.27.42:3000/lab'));
+      final response = await http.get(Uri.parse('http://192.168.43.120:3000/lab'));
       if (response.statusCode == 200) {
         final List<dynamic> labsJson = jsonDecode(response.body);
         setState(() {
@@ -86,7 +86,7 @@ class _LabListPageState extends State<LabListPage> {
 
     if (confirmed == true) {
       final response = await http.delete(
-        Uri.parse('http://10.74.27.42:3000/lab/$id'),
+        Uri.parse('http://192.168.43.120:3000/lab/$id'),
       );
       if (response.statusCode == 200) {
         fetchLabs();

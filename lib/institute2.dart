@@ -26,24 +26,18 @@ class _InstituteProfilePageState extends State<InstituteProfilePage> {
     super.initState();
     final data = widget.instituteData;
     nameController = TextEditingController(text: data['name'] ?? '');
-    registrationController = TextEditingController(
-      text: data['registerNumber'] ?? '',
-    );
+    registrationController = TextEditingController(text: data['registerNumber'] ?? '');
     emailController = TextEditingController(text: data['email'] ?? '');
-    phoneController = TextEditingController(
-      text: data['telephoneNumber'] ?? '',
-    );
+    phoneController = TextEditingController(text: data['telephoneNumber'] ?? '');
     addressController = TextEditingController(text: data['address'] ?? '');
     websiteController = TextEditingController(text: data['website'] ?? '');
     aboutController = TextEditingController(text: data['about'] ?? '');
-    certificateController = TextEditingController(
-      text: data['certificate'] ?? '',
-    );
+    certificateController = TextEditingController(text: data['certificate'] ?? '');
   }
 
   Future<void> updateInstitute() async {
     final String id = widget.instituteData['id'];
-    final url = Uri.parse('http://10.74.27.42:3000/institute/$id');
+    final url = Uri.parse('http://192.168.43.120:3000/institutes/$id');
 
     final updatedData = {
       "name": nameController.text,
@@ -56,22 +50,28 @@ class _InstituteProfilePageState extends State<InstituteProfilePage> {
       "certificate": certificateController.text,
     };
 
-    final response = await http.patch(
-      url,
-      headers: {"Content-Type": "application/json"},
-      body: json.encode(updatedData),
-    );
+    try {
+      final response = await http.patch(
+        url,
+        headers: {"Content-Type": "application/json"},
+        body: json.encode(updatedData),
+      );
 
-    if (response.statusCode == 200) {
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(const SnackBar(content: Text("Updated successfully")));
-      Navigator.pop(context);
-    } else {
-      print("Update failed: ${response.statusCode}");
-      print("Response body: ${response.body}");
+      if (response.statusCode == 200) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text("Updated successfully")),
+        );
+       Navigator.pushReplacementNamed(context, '/institute3');
+      } else {
+        print("Update failed: ${response.statusCode}");
+        print("Response body: ${response.body}");
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text("Failed to update. Please try again.")),
+        );
+      }
+    } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text("Failed to update. Please try again.")),
+        SnackBar(content: Text("Error: $e")),
       );
     }
   }

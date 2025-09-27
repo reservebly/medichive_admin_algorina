@@ -69,7 +69,7 @@ class _AddLabFullPageState extends State<AddLabFullPage> {
       "certificate": certificateController.text.trim(),
     };
 
-    final url = Uri.parse('http://10.74.27.42:3000/lab');
+    final url = Uri.parse('http://192.168.43.120:3000/lab');
 
     try {
       final response = await http.post(

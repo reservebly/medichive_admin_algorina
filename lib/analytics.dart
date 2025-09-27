@@ -10,7 +10,7 @@ class AnalyticsPage extends StatefulWidget {
 }
 
 class _AnalyticsPageState extends State<AnalyticsPage> {
-  static const String baseUrl = 'http://10.74.27.42:3000';
+  static const String baseUrl = 'http://192.168.43.120:3000';
 
   int instituteCount = 0;
   int labCount = 0;

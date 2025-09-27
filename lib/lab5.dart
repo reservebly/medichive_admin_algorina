@@ -30,7 +30,7 @@ class LabDeletePopup extends StatelessWidget {
         const SizedBox(width: 12),
         ElevatedButton(
           onPressed: () {
-            Navigator.pop(context); // Close dialog
+            Navigator.pop(context);
             Navigator.pushNamed(context, '/labDeleted');
           },
           style: ElevatedButton.styleFrom(
