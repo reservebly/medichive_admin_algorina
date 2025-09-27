@@ -4,47 +4,46 @@ class ChooseCategoryPage extends StatelessWidget {
   const ChooseCategoryPage({super.key});
 
   static const Color primaryBlue = Color(0xFF1E79BF);
-  static const Color backgroundBlue = Color.fromRGBO(235, 244, 248, 1.0);
+  static const Color darkBlue = Color(0xFF0A2472);
+  static const Color lightBlue = Color(0xFFE8F3FF);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: backgroundBlue,
-      extendBodyBehindAppBar: true,
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        leading: Padding(
-          padding: const EdgeInsets.only(left: 8.0),
-          child: IconButton(
-            icon: Container(
-              padding: const EdgeInsets.all(8),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(12),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withOpacity(0.1),
-                    blurRadius: 8,
-                    offset: const Offset(0, 2),
-                  ),
-                ],
-              ),
-              child: const Icon(Icons.arrow_back_ios_new, color: primaryBlue, size: 20),
-            ),
-            onPressed: () {
-              Navigator.pop(context);
-            },
-          ),
-        ),
-      ),
+      backgroundColor: Colors.white,
       body: SafeArea(
         child: SingleChildScrollView(
           child: Padding(
-            padding: const EdgeInsets.fromLTRB(24.0, 20.0, 24.0, 32.0),
+            padding: const EdgeInsets.fromLTRB(24.0, 16.0, 24.0, 32.0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                Container(
+                  margin: const EdgeInsets.only(bottom: 24),
+                  child: InkWell(
+                    onTap: () => Navigator.pop(context),
+                    borderRadius: BorderRadius.circular(12),
+                    child: Container(
+                      padding: const EdgeInsets.all(8),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(12),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withOpacity(0.08),
+                            blurRadius: 8,
+                            offset: const Offset(0, 2),
+                          ),
+                        ],
+                      ),
+                      child: const Icon(
+                        Icons.arrow_back_ios_new,
+                        color: primaryBlue,
+                        size: 20,
+                      ),
+                    ),
+                  ),
+                ),
                 const Row(
                   children: [
                     Icon(
@@ -66,7 +65,10 @@ class ChooseCategoryPage extends StatelessWidget {
                 ),
                 const SizedBox(height: 12),
                 Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 16,
+                    vertical: 12,
+                  ),
                   decoration: BoxDecoration(
                     color: primaryBlue.withOpacity(0.1),
                     borderRadius: BorderRadius.circular(12),
@@ -181,11 +183,7 @@ class ChooseCategoryPage extends StatelessWidget {
                     color: primaryBlue.withOpacity(0.1),
                     borderRadius: BorderRadius.circular(12),
                   ),
-                  child: Icon(
-                    getIcon(),
-                    color: primaryBlue,
-                    size: 24,
-                  ),
+                  child: Icon(getIcon(), color: primaryBlue, size: 24),
                 ),
                 const SizedBox(width: 16),
                 Expanded(
